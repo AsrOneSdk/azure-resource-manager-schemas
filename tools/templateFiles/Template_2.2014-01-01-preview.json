@@ -1,5 +1,5 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "$schema": "https://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
@@ -9,36 +9,11 @@
       "type": "string"
     }
   },
-  "outputs": {
-    "out1": {
-      "type": "secureObject",
-      "value": {
-        "abc": "val1"
-      }
-    }
-  },
   "resources": [
-    {
-      "type": "Microsoft.ServerManagement/nodes",
-      "apiVersion": "2016-07-01-preview",
-      "name": "adad",
-      "location": "global",
-      "properties": {
-        "gatewayId": "ajdfa",
-        "connectionName": "abcd"
-      }
-    },
-    {
-      "type": "Microsoft.ServerManagement/gateways",
-      "name": "a",
-      "location": "global",
-      "apiVersion": "2015-07-01-preview",
-      "properties": {}
-    },
     {
       "name": "test",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2014-04-01-preview",
       "dependsOn": [],
       "tags": {
         "displayName": "test"
@@ -51,7 +26,7 @@
         },
         "parameters": {
           "parm1": {
-            "value": "[toLower('A')]"
+            "value": "['variables(foo)']"
           }
         }
       }
@@ -64,7 +39,7 @@
       "properties": {
         "dnsConfig": {
           "relativeName": "a",
-          "ttl": "[trim('a')]",
+          "ttl": 31,
           "fqdn": "a"
         },
         "monitorConfig": {
@@ -76,26 +51,20 @@
       }
     },
     {
-      "type": "Microsoft.KeyVault/vaults",
-      "apiVersion": "2015-06-01",
-      "name": "b",
-      "location": "Korea South",
+      "type": "Microsoft.DataCatalog/catalogs",
+      "apiVersion": "2016-03-30",
+      "name": "a",
+      "location": "Australia East",
       "properties": {
-        "accessPolicies": [
+        "sku": "Free",
+        "enableAutomaticUnitAdjustment": false,
+        "units": 100,
+        "admins": [
           {
-            "permissions": {
-              "keys": "[parameters('b')]",
-              "secrets": "[parameters('c')]"
-            },
-            "objectId": "[parameters('d')]",
-            "tenantId": "[parameters('e')]"
+            "objectId": "a",
+            "upn": "b"
           }
-        ],
-        "sku": {
-          "family": "[parameters('f')]",
-          "name": "[parameters('g')]"
-        },
-        "tenantId": "[parameters('h')]"
+        ]
       }
     },
     {
@@ -266,6 +235,7 @@
       "kind": "BlobStorage",
       "name": "cdsdf",
       "location": "Australia East",
+      "properties": {},
       "sku": {
         "name": "Premium_LRS"
       }
@@ -326,133 +296,47 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
-      "name": "[parameters(concat('a-', copyIndex()))]",
-      "properties": {
-        "mode": "Incremental",
-        "parametersLink": {
-          "uri": "http://a.com/1",
-          "contentVersion": "1.0.0.0"
-        },
-        "templateLink": {
-          "uri": "http://a.com/1",
-          "contentVersion": "1.0.0.0"
-        }
-      },
-      "copy": {
-        "count": 3,
-        "name": "adfb"
-      }
-    },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2016-02-01",
+      "apiVersion": "2014-04-01-preview",
       "name": "[parameters('a')]",
       "properties": {
         "template": {},
         "parameters": {},
-        "mode": "Complete"
+        "mode": "Incremental"
       }
-    },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
-      "name": "[parameters('a')]",
-      "properties": {
-        "mode": "Incremental",
-        "template": {},
-        "parameters": {}
-      }
-    },
-    {
-      "apiVersion": "2016-02-01",
-      "name": "nestedTemplate",
-      "type": "Microsoft.Resources/deployments",
-      "properties": {
-        "mode": "Incremental",
-        "template": {
-          "$schema": "http://ryanstorage.blob.core.windows.net/fwlink/schemas/2015-01-01/deploymentTemplate.json#",
-          "contentVersion": "1.0.0.0",
-          "parameters": {},
-          "resources": [],
-          "variables": {},
-          "outputs": {
-            "result": {
-              "value": "Hello World",
-              "type": "string"
-            }
-          }
-        }
-      }
-    },
-    {
-      "type": "Microsoft.Network/dnszones",
-      "apiVersion": "2015-05-04-preview",
-      "name": "zonesWithChildResource",
-      "properties": {
-        "maxNumberOfRecordSets": 123,
-        "numberOfRecordSets": 32
-      },
-      "resources": [
-        {
-          "type": "TXT",
-          "apiVersion": "2015-05-04-preview",
-          "properties": {}
-        }
-      ]
-    },
-    {
-      "type": "Microsoft.Scheduler/jobCollections",
-      "apiVersion": "2016-03-01",
-      "name": "mycollection",
-      "properties": {},
-      "resources": [
-        {
-          "type": "jobs",
-          "apiVersion": "2016-03-01",
-          "properties": {}
-        }
-      ]
     },
     {
       "type": "Microsoft.Logic/workflows",
+      "name": "myWorkflow",
       "apiVersion": "2015-02-01-preview",
-      "name": "myflow",
       "properties": {
-        "state": "Enabled",
-        "parameters": {
-          "para1": {
-            "type": "Array",
-            "value": {}
+        "sku": {
+          "name": "Free",
+          "plan": {
+            "id": "123"
           }
         }
       }
     },
     {
       "type": "Microsoft.RecoveryServices/vaults",
-      "apiVersion": "2016-06-01",
-      "name": "vaults",
-      "location": "East US",
+      "apiVersion": "2015-12-15",
+      "location": "Australia East",
+      "name": "valuts",
       "sku": {
         "name": "RS0",
         "tier": "Standard"
       },
-      "properties": {
-        "prop1": "val1"
-      },
-      "tags": {
-        "additional": "value"
-      }
+      "properties": {}
     },
     {
       "type": "Microsoft.Media/mediaServices",
       "apiVersion": "2015-10-01",
-      "name": "sfdsfw",
       "location": "East US",
+      "name": "12345",
       "properties": {
         "storageAccounts": [
           {
-            "id": "123",
+            "id": "[concat('a', 'b')]",
             "isPrimary": false
           }
         ]
@@ -460,19 +344,15 @@
     },
     {
       "type": "Microsoft.Cache/Redis",
-      "name": "redis",
       "apiVersion": "2016-04-01",
+      "name": "redis",
       "properties": {
         "sku": {
-          "name": "Basic",
+          "name": "Premium",
           "capacity": 15,
           "family": "C"
         },
-        "shardCount": 30,
-        "tenantSettings": {
-          "set1": "abc"
-        },
-        "subnetId": "/subscriptions/123/resourceGroups/abc/providers/Microsoft.Network/virtualNetworks/abc/subnets/sub"
+        "staticIP": "10.10.123.178"
       }
     },
     {
@@ -547,17 +427,11 @@
             "maxDeliveryCount": 33
           }
         },
-        "operationsMonitoringProperties": {
-          "events": {
-            "abc": "Error",
-            "ds": "Error, Information"
-          }
-        },
         "ipFilterRules": [
           {
             "filterName": "name",
-            "action": "Accept",
-            "ipMask": "192.168.1.1/24"
+            "ipMask": "192.168.1.1/24",
+            "action": "Reject"
           }
         ]
       },
@@ -572,7 +446,7 @@
       "location": "[resourceGroup().location]",
       "copy": {
         "name": "BEnicLoop",
-        "count": "[listAll(parameters('BEvirtualMachineNames'), '2015-05-01-preview'))]"
+        "count": "[length(parameters('BEvirtualMachineNames'))]"
       },
       "dependsOn": [],
       "properties": {
@@ -583,13 +457,13 @@
               "privateIPAllocationMethod": "Static",
               "privateIPAddress": "[concat(parameters('BEsubnetIPPrefix'),copyIndex(parameters('BEnicStartingAddress')))]",
               "subnet": {
-                "id": "[listAll(parameters('BEvirtualMachineNames'), '2015-05-01-preview'))]"
+                "id": "[variables('BEsubnetRef')]"
               }
             }
           }
         ],
         "dnsSettings": {
-          "dnsServers": "[skip(parameters('onPremDNSServers'), 3)]"
+          "dnsServers": "[parameters('onPremDNSServers')]"
         }
       }
     },
@@ -597,7 +471,7 @@
       "type": "Microsoft.Network/dnszones",
       "apiVersion": "2016-04-01",
       "name": "myzones",
-      "location": "Canada Central",
+      "location": "Central India",
       "properties": {}
     },
     {
@@ -642,33 +516,32 @@
     },
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
+      "apiVersion": "2015-06-15",
+      "name": "myextension",
+      "location": "West Central US",
+      "properties": {
+        "publisher": "publisher",
+        "settings": {},
+        "type": "mytype",
+        "typeHandlerVersion": "123",
+        "autoUpgradeMinorVersion": "abc"
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "apiVersion": "2016-04-30-preview",
+      "name": "abc",
+      "location": "West US",
+      "properties": {
+        "publisher": "publisher",
+        "type": "sometype",
+        "typeHandlerVersion": "asd",
+        "settings": {}
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
       "apiVersion": "2016-03-30",
-      "name": "myextension",
-      "location": "East US",
-      "properties": {
-        "publisher": "publisher",
-        "settings": {},
-        "type": "mytype",
-        "typeHandlerVersion": "123",
-        "autoUpgradeMinorVersion": "abc"
-      }
-    },
-    {
-      "type": "Microsoft.Compute/virtualMachines/extensions",
-      "apiVersion": "2016-04-30-preview",
-      "name": "myextension",
-      "location": "East US",
-      "properties": {
-        "publisher": "publisher",
-        "settings": {},
-        "type": "mytype",
-        "typeHandlerVersion": "123",
-        "autoUpgradeMinorVersion": "abc"
-      }
-    },
-    {
-      "type": "Microsoft.Compute/virtualMachines/extensions",
-      "apiVersion": "2015-06-15",
       "name": "extension1",
       "location": "West US",
       "properties": {
@@ -684,45 +557,6 @@
           "storageAccountName": "storage",
           "storageAccountKey": "ljsfa;lj",
           "storageAccountEndPoint": "endpoint"
-        }
-      }
-    },
-    {
-      "name": "Test Name",
-      "type": "Microsoft.Compute/virtualMachines/extensions",
-      "location": "Canada East",
-      "tags": {},
-      "apiVersion": "2015-06-15",
-      "properties": {
-        "publisher": "Microsoft.Azure.RecoveryServices",
-        "type": "VMSnapshot",
-        "typeHandlerVersion": "Test Type Handler Version",
-        "autoUpgradeMinorVersion": true,
-        "settings": {
-          "locale": "test locale",
-          "taskId": "test id",
-          "commandToExecute": "test cmd",
-          "objectStr": "test objstr",
-          "logsBlobUri": "test log uri",
-          "statusBlobUri": "test blob uri",
-          "commandStartTimeUTCTicks": "test cmd starttime",
-          "vmType": "microsoft.compute/virtualmachines"
-        }
-      }
-    },
-    {
-      "name": "Test Name",
-      "type": "Microsoft.Compute/virtualMachines/extensions",
-      "location": "Canada East",
-      "tags": {},
-      "apiVersion": "2015-06-15",
-      "properties": {
-        "publisher": "Microsoft.Azure.NetworkWatcher",
-        "type": "NetworkWatcherAgentWindows",
-        "typeHandlerVersion": "123",
-        "autoUpgradeMinorVersion": false,
-        "settings": {
-          "absURL": "abc"
         }
       }
     },
@@ -750,9 +584,9 @@
     {
       "name": "Test Name",
       "type": "Microsoft.Compute/virtualMachines/extensions",
+      "apiVersion": "2015-06-15",
       "location": "Canada East",
       "tags": {},
-      "apiVersion": "2016-04-30-preview",
       "properties": {
         "publisher": "Microsoft.Azure.RecoveryServices",
         "type": "VMSnapshot",
@@ -773,14 +607,24 @@
     {
       "name": "Test Name",
       "type": "Microsoft.Compute/virtualMachines/extensions",
+      "apiVersion": "2016-04-30-preview",
       "location": "Canada East",
       "tags": {},
-      "apiVersion": "2016-04-30-preview",
       "properties": {
-        "publisher": "Microsoft.Azure.NetworkWatcher",
-        "type": "NetworkWatcherAgentWindows",
-        "typeHandlerVersion": "123",
-        "autoUpgradeMinorVersion": false
+        "publisher": "Microsoft.Azure.RecoveryServices",
+        "type": "VMSnapshot",
+        "typeHandlerVersion": "Test Type Handler Version",
+        "autoUpgradeMinorVersion": true,
+        "settings": {
+          "locale": "test locale",
+          "taskId": "test id",
+          "commandToExecute": "test cmd",
+          "objectStr": "test objstr",
+          "logsBlobUri": "test log uri",
+          "statusBlobUri": "test blob uri",
+          "commandStartTimeUTCTicks": "test cmd starttime",
+          "vmType": "microsoft.compute/virtualmachines"
+        }
       }
     },
     {
@@ -835,20 +679,14 @@
       "properties": {
         "hardwareProfile": "[parameters('a')]",
         "storageProfile": "[parameters('b')]",
-        "networkProfile": "[parameters('c')]",
-        "diagnosticsProfile": {
-          "bootDiagnostics": {
-            "enabled": false,
-            "storageUri": "uri"
-          }
-        }
+        "networkProfile": "[parameters('c')]"
       },
       "resources": [
         {
           "type": "extensions",
           "apiVersion": "2015-06-15",
           "name": "extension1",
-          "location": "West US 2",
+          "location": "West US",
           "properties": {
             "publisher": "Microsoft.Azure.Diagnostics",
             "type": "IaaSDiagnostics",
@@ -910,17 +748,14 @@
       "properties": {
         "hardwareProfile": "[parameters('a')]",
         "storageProfile": "[parameters('b')]",
-        "networkProfile": "[parameters('c')]",
-        "osProfile": {
-          "fdsfdsfs": "123"
-        }
+        "networkProfile": "[parameters('c')]"
       },
       "resources": [
         {
           "type": "extensions",
           "apiVersion": "2016-04-30-preview",
           "name": "extension1",
-          "location": "West US 2",
+          "location": "West US",
           "properties": {
             "publisher": "Microsoft.Azure.Diagnostics",
             "type": "IaaSDiagnostics",
@@ -1148,7 +983,7 @@
       "type": "Microsoft.MachineLearning/commitmentPlans",
       "apiVersion": "2016-05-01-preview",
       "name": "myplans",
-      "location": "West Central US",
+      "location": "East Asia",
       "sku": {
         "name": "mysku",
         "tier": "12",
@@ -1278,13 +1113,14 @@
           "type": "sessions",
           "apiVersion": "2016-07-01-preview",
           "properties": {
-            "password": "123"
+            "credentialDataFormat": "abc",
+            "password": "23"
           }
         }
       ]
     },
     {
-      "type": "Microsoft.ServerManagement/gateways/sessions",
+      "type": "Microsoft.ServerManagement/nodes/sessions",
       "apiVersion": "2016-07-01-preview",
       "name": "sessions",
       "location": "Brazil South",
@@ -1327,15 +1163,8 @@
       "apiVersion": "2017-05-10",
       "name": "nestedTemplate",
       "type": "Microsoft.Resources/deployments",
-      "subscriptionId": "aa",
-      "resourceGroup": "myRG",
-      "copy": {
-        "name": "copy1",
-        "count": 12,
-        "mode": "Serial",
-        "batchSize": "[parameters('batchSize')]"
-      },
-      "condition": true,
+      "subscriptionId": "123",
+      "resourceGroup": "myResourceGroup",
       "properties": {
         "mode": "Incremental",
         "template": {
@@ -1358,18 +1187,18 @@
       "name": "validLock",
       "type": "Microsoft.Authorization/locks",
       "properties": {
-        "level": "CanNotDelete",
+        "level": "NotSpecified",
         "notes": "test note"
       }
     },
     {
       "type": "Microsoft.ApiManagement/service",
-      "name": "myservice",
       "apiVersion": "2016-07-07",
-      "location": "Canada East",
+      "name": "myservice",
+      "location": "East US",
       "sku": {
         "name": "Standard",
-        "capacity": 1
+        "capacity": 3
       },
       "properties": {
         "publisherEmail": "abc"
@@ -1381,7 +1210,7 @@
       "name": "myservers",
       "location": "West US",
       "sku": {
-        "name": "S1"
+        "name": "S2"
       },
       "properties": {
         "asAdministrators": {
@@ -1393,7 +1222,7 @@
     },
     {
       "type": "Microsoft.ServiceFabric/clusters",
-      "apiVersion": "2016-09-01",
+      "apiVersion": "2016-03-01",
       "name": "myclusters",
       "properties": {
         "nodeTypes": [
@@ -1448,7 +1277,7 @@
           "name": "abc",
           "accessKey": "key"
         },
-        "adminUserEnabled": true
+        "adminUserEnabled": false
       }
     },
     {
@@ -1505,7 +1334,8 @@
       "location": "Japan West",
       "properties": {
         "administratorLogin": "aaa",
-        "administratorLoginPassword": "password"
+        "administratorLoginPassword": "password",
+        "version":"12.0"
       },
       "resources": [
         {
@@ -1523,8 +1353,17 @@
       "name": "sql",
       "location": "west us",
       "properties": {
-        "administratorLogin": "mylogin",
-        "administratorLoginPassword": "mypa$$w0rd"
+        "administratorLogin":"mylogin",
+        "administratorLoginPassword":"mypa$$w0rd"
+      }
+    },
+    {
+      "type": "Microsoft.Network/publicIPAddresses",
+      "apiVersion": "2016-06-01",
+      "name": "ip1",
+      "location": "Brazil South",
+      "properties": {
+        "publicIPAllocationMethod": "Dynamic"
       }
     },
     {
@@ -1542,15 +1381,6 @@
             }
           }
         ]
-      }
-    },
-    {
-      "type": "Microsoft.Network/publicIPAddresses",
-      "apiVersion": "2016-06-01",
-      "name": "ip1",
-      "location": "Brazil South",
-      "properties": {
-        "publicIPAllocationMethod": "Dynamic"
       }
     },
     {
@@ -1717,57 +1547,12 @@
       ]
     },
     {
-      "type": "Microsoft.Web/sites",
-      "apiVersion": "2016-08-01",
-      "name": "site1",
-      "location": "West US",
-      "properties": {
-        "enabled": true,
-        "serverFarmId": "id",
-        "hostNameSslStates": [
-          {
-            "name": "s1",
-            "sslState": "Disabled"
-          }
-        ]
-      }
-    },
-    {
       "type": "Microsoft.Web/connections",
       "apiVersion": "2016-06-01",
       "name": "connection",
       "location": "West US",
-      "properties": {}
-    },
-    {
-      "type": "Microsoft.Web/sites/config",
-      "apiVersion": "2016-08-01",
-      "name": "a1/appsettings",
-      "location": "West Central US",
       "properties": {
-        "aaa": "bbb"
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/config",
-      "apiVersion": "2016-08-01",
-      "name": "a1/web",
-      "location": "Japan West",
-      "properties": {
-        "numberOfWorkers": 1,
-        "netFrameworkVersion": "v4.6"
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/config",
-      "apiVersion": "2016-08-01",
-      "name": "a1/connectionstrings",
-      "location": "West Central US",
-      "properties": {
-        "anyproperty": {
-          "value": "a1",
-          "type": "MySql"
-        }
+        
       }
     },
     {
@@ -1786,7 +1571,7 @@
     {
       "type": "Microsoft.EventHub/namespaces",
       "apiVersion": "2017-04-01",
-      "name": "namename",
+      "name": "name123456",
       "location": "west us",
       "properties": {
         "createdAt": "2015-01-01"
@@ -1862,6 +1647,45 @@
       }
     },
     {
+      "type": "Microsoft.Compute/galleries",
+      "apiVersion": "2019-03-01",
+      "name": "myGallery",
+      "location": "East US",
+      "properties": {
+        "description": "Sample gallery description."
+      }
+    },
+    {
+      "type": "Microsoft.Compute/galleries/images",
+      "apiVersion": "2019-03-01",
+      "name": "myGalleryImage",
+      "location": "East US",
+      "properties": {
+        "osType": "Linux",
+        "osState": "Generalized",
+        "identifier": {
+          "publisher": "samplePublisher",
+          "offer": "sampleOffer",
+          "sku": "sampleSku"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Compute/galleries/images/versions",
+      "apiVersion": "2019-03-01",
+      "name": "myGalleryImageVersion",
+      "location": "East US",
+      "properties": {
+        "publishingProfile": {
+          "source": {
+            "managedImage": {
+              "id": "/subscriptions/64646596-7b0f-4f89-86a8-01473e7a1e39/resourceGroups/rgName/providers/Microsoft.Compute/images/imageName"
+            }
+          }
+        }
+      }
+    },
+    {
       "type": "Microsoft.CustomerInsights/hubs",
       "apiVersion": "2017-01-01",
       "name": "name1",
@@ -1891,41 +1715,10 @@
     {
       "type": "Microsoft.StreamAnalytics/streamingjobs",
       "apiVersion": "2016-03-01",
-      "location": "west us",
+      "location": "west us", 
       "name": "abc",
-      "properties": {}
-    },
-    {
-      "type": "Microsoft.CustomerInsights/hubs",
-      "apiVersion": "2017-01-01",
-      "location": "West US",
-      "name": "name1",
-      "properties": {}
-    },
-    {
-      "type": "Microsoft.CustomerInsights/hubs",
-      "apiVersion": "2017-04-26",
-      "location": "West US 2",
-      "name": "n1",
-      "properties": {}
-    },
-    {
-      "type": "Microsoft.ServiceFabric/clusters",
-      "apiVersion": "2017-07-01-preview",
-      "location": "west us",
-      "name": "na",
       "properties": {
-        "nodeTypes": [],
-        "managementEndpoint": "11"
-      }
-    },
-    {
-      "type": "Microsoft.StreamAnalytics/streamingjobs",
-      "apiVersion": "2016-03-01",
-      "location": "west us",
-      "name": "nam31",
-      "properties": {
-        "outputStartMode": "JobStartTime"
+        
       }
     },
     {
@@ -1946,8 +1739,8 @@
       "name": "[variables('importExportJobName')]",
       "location": "[resourceGroup().location]",
       "properties": {
-        "storageAccountId": "[parameters('storageAccountId')]",
-        "jobType": "abc"
+          "storageAccountId": "[parameters('storageAccountId')]",
+          "jobType": "abc"
       }
     },
     {
@@ -1988,7 +1781,7 @@
             "connectionString": "#####################################",
             "location": "westus"
           }
-        ]
+       ]         
       }
     },
     {
@@ -2000,7 +1793,8 @@
         "name": "Basic",
         "tier": "Basic"
       },
-      "properties": {}
+      "properties": {
+      }
     },
     {
       "type": "Microsoft.ServiceBus/namespaces",
@@ -2011,20 +1805,21 @@
         "name": "Basic",
         "tier": "Basic"
       },
-      "properties": {}
+      "properties": {
+      }
     },
     {
-      "apiVersion": "2017-09-01",
-      "name": "[variables('loadBalancerName')]",
-      "type": "Microsoft.Network/loadBalancers",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "frontendIPConfigurations": [
+      "apiVersion":"2017-09-01",
+      "name":"[variables('loadBalancerName')]",
+      "type":"Microsoft.Network/loadBalancers",
+      "location":"[resourceGroup().location]",
+      "properties":{
+        "frontendIPConfigurations":[
           {
-            "name": "loadBalancerFrontEnd1",
-            "properties": {
-              "publicIPAddress": {
-                "id": "[variables('publicIPAddressID1')]"
+            "name":"loadBalancerFrontEnd1",
+            "properties":{
+              "publicIPAddress":{
+                "id":"[variables('publicIPAddressID1')]"
               }
             }
           }
@@ -2032,17 +1827,17 @@
       }
     },
     {
-      "apiVersion": "2017-10-01",
-      "name": "[variables('loadBalancerName')]",
-      "type": "Microsoft.Network/loadBalancers",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "frontendIPConfigurations": [
+      "apiVersion":"2017-10-01",
+      "name":"[variables('loadBalancerName')]",
+      "type":"Microsoft.Network/loadBalancers",
+      "location":"[resourceGroup().location]",
+      "properties":{
+        "frontendIPConfigurations":[
           {
-            "name": "loadBalancerFrontEnd1",
-            "properties": {
-              "publicIPAddress": {
-                "id": "[variables('publicIPAddressID1')]"
+            "name":"loadBalancerFrontEnd1",
+            "properties":{
+              "publicIPAddress":{
+                "id":"[variables('publicIPAddressID1')]"
               }
             }
           }
@@ -2056,18 +1851,11 @@
       "name": "sto725",
       "kind": "StorageV2",
       "sku": {
-        "name": "Standard_GRS"
+          "name" : "Standard_GRS"
       },
-      "properties": {
-        "supportsHttpsTrafficOnly": true
+      "properties":{
+          "supportsHttpsTrafficOnly": true
       }
-    },
-    {
-      "type": "Microsoft.Network/dnsZones",
-      "name": "[parameters('newZoneName')]",
-      "apiVersion": "2017-09-01",
-      "location": "global",
-      "properties": {}
     },
     {
       "type": "Microsoft.Network/dnsZones/TXT",
@@ -2078,15 +1866,10 @@
         "TTL": 3600,
         "TXTRecords": [
           {
-            "value": [
-              "test",
-              "abc"
-            ]
+            "value": [ "test", "abc" ]
           },
           {
-            "value": [
-              "123"
-            ]
+            "value": [ "123" ]
           }
         ]
       },
@@ -2192,6 +1975,23 @@
             }
           }
         ]
+      }
+    },
+    {
+      "name": "myfhirservice",
+      "type": "Microsoft.HealthcareApis/services",
+      "apiVersion": "2018-08-20-preview",
+      "location": "[resourceGroup().location]",
+      "kind": "fhir",
+      "properties": {
+        "accessPolicies": [
+            {
+              "objectId": "[parameters('fhirServiceSettings').objectId]"
+            }
+        ],
+        "cosmosDbConfiguration": {
+          "offerThroughput": 1000
+        }
       }
     }
   ]
